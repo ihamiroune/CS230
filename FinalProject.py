@@ -47,16 +47,29 @@ RGBD_LIST = [(0, 128, 0),(255, 165, 0),(255, 255, 0),
 # creating a utility method that does that for code simplification.
 
 def SeriesToDataFrame(s, ind="Index", val="Count"):
-    return(pd.DataFrame({ind:s.index,val:s.values}))
+"""
+parameter(s): series, index name, value
+return: data frame with two columns, index and count
+"""
 
+    return(pd.DataFrame({ind:s.index,val:s.values}))
 
 ##################################### Read files #####################################################
 
 def get_data(csv_list) -> pd.DataFrame:
+"""
+parameter(s): imported csv list
+return: tuple of dataframes that are made from csv list items
+"""
     pd_list = [pd.read_csv(csv_file) for csv_file in csv_list]
     return tuple(pd_list)
 
 def edit_data(df_crime, df_district):
+"""
+parameter(s): two dataframes generated from get_data() 
+return: cleaned up data frames (remove incomplete records, add new columns, rename columns)
+"""
+
     ##### Cleanup df_crime data
     #Streamlit: Map data must contain a column named "latitude" or "lat"
     df_crime.rename(columns = {'Lat' : 'lat', 'Long' : 'lon'}, inplace = True)
@@ -80,9 +93,16 @@ def edit_data(df_crime, df_district):
 
 
 ################################### Side Bar ###################################################
-# Must return modified dataframe and topN value to caller, so changes made inside this method are sent back through return value.
-# Since two values need to be sent back, return as a tuple.
+"""
+Side bar: Must return modified dataframe and topN value to caller, so changes made inside this method are sent back through return value.
+Since two values need to be sent back, return as a tuple.
+"""
 def create_sidebar(df):
+"""
+parameter(s): crime dataframe
+return: modified data frame based on sidebar filters, and top N selection
+"""
+
     st.sidebar.header('View Filters:')
 
     select_top_N = st.sidebar.slider(
@@ -116,7 +136,16 @@ def create_sidebar(df):
 
 
 ######################################### Metrics ###################################################
+"""
+Metric: Creating page metrics (Total Crimes, Weekly Crimes, and Reported Shootings) based on crime dataframe. 
+"""
+
 def show_metrics(df):
+"""
+parameter(s): crime dataframe
+return: none
+"""
+
     # create three columns
     kpi1, kpi2, kpi3 = st.columns(3)
 
@@ -137,8 +166,16 @@ def show_metrics(df):
     )
 
 #############################################   Map  ################################################
-
+"""
+Map: Creating a map based on crime dataframe, showing crimes/shootings per district. Map will end up being 
+color-coded by district
+"""
 def show_map(df):
+"""
+parameter(s): crime dataframe
+return: none
+"""
+
     st.markdown("### Geographical View")
 
     if (df.empty):
@@ -174,7 +211,15 @@ def show_map(df):
         st.pydeck_chart(map)
 
 ########################################### Crime Categories ##############################################
+"""
+Crime categories: Display most dangerous districts and most common crimes based on crime dataframe
+"""
 def show_crime_classification(df, color_map, topN):
+"""
+parameter(s): crime dataframe, color selection based on district, top N selection from sidebar 
+return: none
+"""
+
     st.markdown("### Crime Classification")
     fig_district, fig_offense = st.columns(2)
 
@@ -199,7 +244,14 @@ def show_crime_classification(df, color_map, topN):
 
 
 ########################################## Crime Patterns ##############################################
+"""
+Crime Patterns: Display crime patterns by day of the week, and hour of the day. Data from crime dataframe.
+"""
 def show_crime_patterns(df, color_map):
+"""
+parameter(s): crime dataframe, color selection based on district 
+return: none
+"""
     st.markdown("### Crime Patterns")
     fig_weekday, fig_hourly = st.columns(2)
 
@@ -231,7 +283,14 @@ def show_crime_patterns(df, color_map):
 
 
 ####################################### Crime Trends ##############################################
+"""
+Crime Trends: Display daily crime rate and cumulative crime rate by date 
+"""
 def show_trends(df):
+"""
+parameter(s): crime dataframe 
+return: none
+"""
     st.markdown("### Crime Trends")
 
     df_date_count = SeriesToDataFrame(df['date'].value_counts().sort_index(),"date", "count")
@@ -252,8 +311,15 @@ def show_trends(df):
 
 
 
-################################### Data Table ########################################################
+########################################## Data Table ###################################################
+"""
+Data Table: Present figure data in table form 
+"""
 def show_data_tables(df):
+"""
+parameter(s): crime dataframe 
+return: none
+"""
     st.markdown("### Table View")
     fig1, fig2, fig3 = st.columns(3)  
 
@@ -276,6 +342,7 @@ def show_data_tables(df):
         st.dataframe(df_bystreet)
 
 
+################################################# Main ######################################################
 
 def main():
     # Setup main variables, df, dfd, and color_map. - Two DataFrames for crime data and district data.
