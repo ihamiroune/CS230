@@ -259,7 +259,7 @@ def show_trends(df):
 ################################### Data Table ########################################################
 def show_data_tables(df):
     st.markdown("### Table View")
-    fig1, fig2, fig3 = st.columns([2,1,1])  #first column is twice as wide as the other two.
+    fig1, fig2, fig3 = st.columns(3)  
 
     with fig1:
         st.write("Crime Counts by Offense.")
