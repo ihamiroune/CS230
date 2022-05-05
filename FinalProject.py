@@ -19,12 +19,12 @@ st.set_page_config(
     layout="wide",
 )
 
-############################ Global Constants ###############################################
+############################ Global Constants #####################################################
 #Define Global Constants and Variables.
 BOSTON_CRIME_DATA = Path(__file__).parents[0]/'Data/BostonCrime2022_8000_sample.csv'
 BOSTON_DISTRICTS = Path(__file__).parents[0]/'Data/BostonDistricts_names.csv'
 
-#### Define Color Values for each District.
+########################### Define Color Values for each District ##################################
 # Py Deck map chart takes in RGB tuples as colors, whereas plotly_express charts take in named colors.
 # Since I was not able to figure out how to dynamically get one value from the other,
 # I have maintained two lists, COLOR_LIST by color name, and RGBD_LIST by decimal RBD typles.
@@ -34,19 +34,14 @@ BOSTON_DISTRICTS = Path(__file__).parents[0]/'Data/BostonDistricts_names.csv'
 COLOR_LIST = ['green','orange','yellow','lightsteelblue',
               'cornflowerblue','royalblue','mediumslateblue','slateblue',
               'darkslateblue','blue','mediumblue','navy']
-#   b. get the normal RGB value using: use new_list = [colors.to_rgb(c) for c in COLOR_LIST]
-RGBN_LIST = [(0.0, 0.5019607843137255, 0.0), (1.0, 0.6470588235294118, 0.0), (1.0, 1.0, 0.0),
-             (0.6901960784313725, 0.7686274509803922, 0.8705882352941177),(0.39215686274509803, 0.5843137254901961, 0.9294117647058824), (0.2549019607843137, 0.4117647058823529, 0.8823529411764706),
-             (0.4823529411764706, 0.40784313725490196, 0.9333333333333333),(0.41568627450980394, 0.35294117647058826, 0.803921568627451), (0.2823529411764706, 0.23921568627450981, 0.5450980392156862),
-             (0.0, 0.0, 1.0), (0.0, 0.0, 0.803921568627451), (0.0, 0.0, 0.5019607843137255)]
-#   c. lookup the decimal RGB value from https://doc.instantreality.org/tools/color_calculator/
+#   b. lookup the decimal RGB value from https://doc.instantreality.org/tools/color_calculator/
 RGBD_LIST = [(0, 128, 0),(255, 165, 0),(255, 255, 0),
              (176, 196, 222),(100, 149, 237),(65, 105, 225),
              (123, 104, 238),(106, 90, 205),(72, 61, 139),
              (0, 0, 255),(0, 0, 205),(0, 0, 128)]
 
 
-########################### Misc Utility Methods ###########################################
+################################ Misc Utility Methods ###########################################
 # DataFrame method Value_Count() returns a Series, and we often have to convert it to
 # a DataFrame, before passing it to a chart function. Since we do this for several chart,
 # creating a utility method that does that for code simplification.
@@ -55,7 +50,7 @@ def SeriesToDataFrame(s, ind="Index", val="Count"):
     return(pd.DataFrame({ind:s.index,val:s.values}))
 
 
-########################### Read files #####################################################
+##################################### Read files #####################################################
 
 def get_data(csv_list) -> pd.DataFrame:
     pd_list = [pd.read_csv(csv_file) for csv_file in csv_list]
@@ -75,16 +70,16 @@ def edit_data(df_crime, df_district):
 
     ##### Define district specific attributes
     df_district["color"] = RGBD_LIST
-    df_district["norm_color"] = RGBN_LIST
+    #df_district["norm_color"] = RGBN_LIST
     df_district["color_name"] = COLOR_LIST
 
-    ##### Merge district DataFrame into crime DataFrame for ease of access.
+    ##### Merge district DataFrame into crime DataFrame to capture district name and color values.
     df_crime = df_crime.merge(df_district, left_on='DISTRICT', right_on='DISTRICT_NUMBER', how='left')
 
     return(df_crime, df_district)
 
 
-########################### Side Bar #############################################################
+################################### Side Bar ###################################################
 # Must return modified dataframe and topN value to caller, so changes made inside this method are sent back through return value.
 # Since two values need to be sent back, return as a tuple.
 def create_sidebar(df):
@@ -120,7 +115,7 @@ def create_sidebar(df):
 
 
 
-######################################## Metrics ###################################################
+######################################### Metrics ###################################################
 def show_metrics(df):
     # create three columns
     kpi1, kpi2, kpi3 = st.columns(3)
@@ -141,7 +136,7 @@ def show_metrics(df):
         value = df[df['SHOOTING'] == 1].INCIDENT_NUMBER.count()
     )
 
-###########################################   Map ###########################################
+#############################################   Map  ################################################
 
 def show_map(df):
     st.markdown("### Geographical View")
@@ -178,7 +173,7 @@ def show_map(df):
 
         st.pydeck_chart(map)
 
-####################################### Crime Categories ##############################################
+########################################### Crime Categories ##############################################
 def show_crime_classification(df, color_map, topN):
     st.markdown("### Crime Classification")
     fig_district, fig_offense = st.columns(2)
@@ -203,7 +198,7 @@ def show_crime_classification(df, color_map, topN):
         st.write(fig)
 
 
-####################################### Crime Patterns ##############################################
+########################################## Crime Patterns ##############################################
 def show_crime_patterns(df, color_map):
     st.markdown("### Crime Patterns")
     fig_weekday, fig_hourly = st.columns(2)
@@ -211,12 +206,13 @@ def show_crime_patterns(df, color_map):
     with fig_weekday:
         #By default, DAY_OF_WEEK is sorted as a Str. To sort as weekday (Monday to Sunday),
         #we need to convert df['DAY_OF_WEEK'] to a custom type column, and then sort it in the histogram call.
-        cats = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        cat_type = CategoricalDtype(categories=cats, ordered=True)
-        df['DAY_OF_WEEK']=df['DAY_OF_WEEK'].astype(cat_type).sort_index()  #make this column ordered, and thus sortable.
-        #SOURCE: https://technology.amis.nl/data-analytics/ordering-rows-in-pandas-data-frame-and-bars-in-plotly-bar-chart-by-day-of-the-week-or-any-other-user-defined-order/
-        #https://plotly.com/python/categorical-axes/
-        #Source: https://plotly.github.io/plotly.py-docs/generated/plotly.express.histogram.html
+
+        days = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        day_type = CategoricalDtype(categories=days, ordered=True)
+        df['DAY_OF_WEEK']=df['DAY_OF_WEEK'].astype(day_type).sort_index()  #make this column ordered, and thus sortable.
+
+      
+        
         fig = px.histogram(df, x="DAY_OF_WEEK",
                            color="DISTRICT_NAME",
                            category_orders={"DAY_OF_WEEK": cats},
@@ -285,7 +281,7 @@ def main():
     # Setup main variables, df, dfd, and color_map. - Two DataFrames for crime data and district data.
     df, dfd = get_data([BOSTON_CRIME_DATA, BOSTON_DISTRICTS])
     df, dfd = edit_data(df, dfd)
-    color_map = dict(zip(dfd["DISTRICT_NAME"].tolist(), COLOR_LIST))
+    color_map = dict(zip(dfd["DISTRICT_NAME"].tolist(), COLOR_LIST))  #plotly expects color info in dictionary format, not list format.
 
     # Setup main page general attributes - Title and SideBar
     st.title("2022 Boston Crime Dashboard")
@@ -301,3 +297,7 @@ def main():
 
 main()
 
+################################################## Sources ####################################################################
+#SOURCE: https://technology.amis.nl/data-analytics/ordering-rows-in-pandas-data-frame-and-bars-in-plotly-bar-chart-by-day-of-the-week-or-any-other-user-defined-order/
+#https://plotly.com/python/categorical-axes/
+#Source: https://plotly.github.io/plotly.py-docs/generated/plotly.express.histogram.html
