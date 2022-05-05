@@ -127,7 +127,7 @@ def show_metrics(df):
     )
 
     kpi2.metric(
-        label="Weekly Crime Rate",
+        label="Weekly Crimes",
         value= round((len(df.index))/7)
     )
 
