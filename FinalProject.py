@@ -132,9 +132,7 @@ def create_sidebar(df):
 
 
 ######################################### Metrics ###################################################
-"""
-Metric: Creating page metrics (Total Crimes, Weekly Crimes, and Reported Shootings) based on crime dataframe. 
-"""
+#Metric: Creating page metrics (Total Crimes, Weekly Crimes, and Reported Shootings) based on crime dataframe. 
 
 def show_metrics(df):
     """
