@@ -91,7 +91,7 @@ def create_sidebar(df):
     st.sidebar.header('View Filters:')
 
     select_top_N = st.sidebar.slider(
-        "Select Top N values to display (default is 5):",
+        "Select Top Number of Categories to display (default is 5):",
         5, 15, 5)
 
     select_district = st.sidebar.multiselect(
@@ -158,7 +158,7 @@ def show_map(df):
         layer = pdk.Layer('ScatterplotLayer',
                   data=df[["DISTRICT_NAME", "lat", "lon", "color"]],
                   get_position='[lon, lat]',
-                  get_radius=150,
+                  get_radius=100,
                   get_color='color',
                   pickable=True
                   )
