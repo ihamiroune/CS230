@@ -10,6 +10,7 @@ import streamlit as st  # 🎈 data web app development
 import pydeck as pdk #used for map chart
 import pandas as pd  # read csv, df/series manipulation
 from pandas.api.types import CategoricalDtype  # for day_of_week custom type
+from pathlib import Path
 
 ############################ Page Configurations ###############################################
 st.set_page_config(
@@ -20,8 +21,8 @@ st.set_page_config(
 
 ############################ Global Constants ###############################################
 #Define Global Constants and Variables.
-BOSTON_CRIME_DATA =  "/ihamiroune/CS230/blob/main/Data/BostonCrime2022_8000_sample.csv"
-BOSTON_DISTRICTS = '/ihamiroune/CS230/blob/main/Data/BostonDistricts_names.csv'
+BOSTON_CRIME_DATA = Path(__file__)/'BostonCrime2022_8000_sample.csv'
+BOSTON_DISTRICTS = Path(__file__)/'BostonDistricts_names.csv'
 
 #### Define Color Values for each District.
 # Py Deck map chart takes in RGB tuples as colors, whereas plotly_express charts take in named colors.
@@ -55,6 +56,7 @@ def SeriesToDataFrame(s, ind="Index", val="Count"):
 
 
 ########################### Read files #####################################################
+
 def get_data(csv_list) -> pd.DataFrame:
     pd_list = [pd.read_csv(csv_file) for csv_file in csv_list]
     return tuple(pd_list)
