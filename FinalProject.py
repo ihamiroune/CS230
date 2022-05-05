@@ -89,10 +89,9 @@ def edit_data(df_crime, df_district):
 
 
 ################################### Side Bar ###################################################
-"""
-Side bar: Must return modified dataframe and topN value to caller, so changes made inside this method are sent back through return value.
-Since two values need to be sent back, return as a tuple.
-"""
+#Side bar: Must return modified dataframe and topN value to caller, so changes made inside this method are sent back through return value.
+#Since two values need to be sent back, return as a tuple.
+
 def create_sidebar(df):
     """
     parameter(s): crime dataframe
@@ -160,10 +159,9 @@ def show_metrics(df):
     )
 
 #############################################   Map  ################################################
-"""
-Map: Creating a map based on crime dataframe, showing crimes/shootings per district. Map will end up being 
-color-coded by district
-"""
+#Map: Creating a map based on crime dataframe, showing crimes/shootings per district. Map will end up being 
+#color-coded by district
+
 def show_map(df):
     """
     parameter(s): crime dataframe
@@ -205,9 +203,8 @@ def show_map(df):
         st.pydeck_chart(map)
 
 ########################################### Crime Categories ##############################################
-"""
-Crime categories: Display most dangerous districts and most common crimes based on crime dataframe
-"""
+#Crime categories: Display most dangerous districts and most common crimes based on crime dataframe
+
 def show_crime_classification(df, color_map, topN):
     """
     parameter(s): crime dataframe, color selection based on district, top N selection from sidebar 
@@ -238,9 +235,8 @@ def show_crime_classification(df, color_map, topN):
 
 
 ########################################## Crime Patterns ##############################################
-"""
-Crime Patterns: Display crime patterns by day of the week, and hour of the day. Data from crime dataframe.
-"""
+#Crime Patterns: Display crime patterns by day of the week, and hour of the day. Data from crime dataframe.
+
 def show_crime_patterns(df, color_map):
     """
     parameter(s): crime dataframe, color selection based on district 
@@ -277,9 +273,8 @@ def show_crime_patterns(df, color_map):
 
 
 ####################################### Crime Trends ##############################################
-"""
-Crime Trends: Display daily crime rate and cumulative crime rate by date 
-"""
+#Crime Trends: Display daily crime rate and cumulative crime rate by date 
+ 
 def show_trends(df):
     """
     parameter(s): crime dataframe 
@@ -306,9 +301,8 @@ def show_trends(df):
 
 
 ########################################## Data Table ###################################################
-"""
-Data Table: Present figure data in table form 
-"""
+#Data Table: Present figure data in table form 
+ 
 def show_data_tables(df):
     """
     parameter(s): crime dataframe 
