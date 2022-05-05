@@ -152,7 +152,7 @@ def show_map(df):
         view_state = pdk.ViewState(
             latitude=df["lat"].mean(),
             longitude=df["lon"].mean(),
-            zoom=9,
+            zoom=10,
             pitch=0)
 
         layer = pdk.Layer('ScatterplotLayer',
