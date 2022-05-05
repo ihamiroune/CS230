@@ -20,8 +20,8 @@ st.set_page_config(
 
 ############################ Global Constants ###############################################
 #Define Global Constants and Variables.
-BOSTON_CRIME_DATA =  "/Data/BostonCrime2022_8000_sample.csv"
-BOSTON_DISTRICTS = '/Data/BostonDistricts_names.csv'
+BOSTON_CRIME_DATA =  "/ihamiroune/CS230/blob/main/Data/BostonCrime2022_8000_sample.csv"
+BOSTON_DISTRICTS = '/ihamiroune/CS230/blob/main/Data/BostonDistricts_names.csv'
 
 #### Define Color Values for each District.
 # Py Deck map chart takes in RGB tuples as colors, whereas plotly_express charts take in named colors.
