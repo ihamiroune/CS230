@@ -219,7 +219,6 @@ def show_crime_patterns(df, color_map):
         #Source: https://plotly.github.io/plotly.py-docs/generated/plotly.express.histogram.html
         fig = px.histogram(df, x="DAY_OF_WEEK",
                            color="DISTRICT_NAME",
-                           pattern_shape="SHOOTING",
                            category_orders={"DAY_OF_WEEK": cats},
                            labels ={'DAY_OF_WEEK':'Day of the Week'},
                            color_discrete_map=color_map,
@@ -229,7 +228,6 @@ def show_crime_patterns(df, color_map):
     with fig_hourly:
         fig = px.histogram(df, x="HOUR",
                            color="DISTRICT_NAME",
-                           pattern_shape="SHOOTING",
                            labels ={'HOUR':'Hour of the Day'},
                            color_discrete_map=color_map,
                            title='By Hour of the Day')
@@ -290,7 +288,7 @@ def main():
     color_map = dict(zip(dfd["DISTRICT_NAME"].tolist(), COLOR_LIST))
 
     # Setup main page general attributes - Title and SideBar
-    st.title("Live Boston Crime Dashboard")
+    st.title("2022 Boston Crime Dashboard")
     df, topN = create_sidebar(df) # create_sidebar changes the rows of DataFrame df based on the selections.
 
     # Call a different method for each section of the page.
