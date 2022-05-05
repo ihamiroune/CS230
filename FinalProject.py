@@ -215,7 +215,7 @@ def show_crime_patterns(df, color_map):
         
         fig = px.histogram(df, x="DAY_OF_WEEK",
                            color="DISTRICT_NAME",
-                           category_orders={"DAY_OF_WEEK": cats},
+                           category_orders={"DAY_OF_WEEK": days},
                            labels ={'DAY_OF_WEEK':'Day of the Week'},
                            color_discrete_map=color_map,
                            title="By Day of the Week")
